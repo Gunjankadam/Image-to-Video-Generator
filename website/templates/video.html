@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>alumini8</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0a0909;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1{
+            color :#fff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    
+
+        video {
+            display: block;
+            margin: 0 auto 20px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .download-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .download-link a {
+            display: inline-block;
+            padding: 10px 25px;
+            font-size: 16px; 
+            font-weight: 300;
+            border: none;
+            outline: none;
+            background:transparent;
+            color: #fff;
+            border:1px solid #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition:all 0.5s;
+            text-decoration: none;
+        }
+
+        .download-link a:hover {
+            background-color:#fff;
+             color:rgb(2, 2, 2);
+        }
+
+        .generate-again-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .generate-again-button button {
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: 300;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+
+        .generate-again-button button:hover {
+            background-color: #fff;
+            color: rgb(2, 2, 2);
+        }
+    </style>
+</head>
+<body>
+    <h1>GENERATED VIDEO</h1>
+    <div class="container">
+        <video width="1024" height="576" controls>
+            <source src="{{video_path}}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="download-link">
+        <a href="{{video_path}}" download>Download Video</a>
+    </div>
+    <div class="generate-again-button">
+        <button onclick="redirectToOtherPage()">Generate Again</button>
+    </div>
+
+    <script>
+        function redirectToOtherPage() {
+            window.location.href = "/upload";
+        }
+    </script>
+</body>
+</html>

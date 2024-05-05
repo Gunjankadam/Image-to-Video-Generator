@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>alumini8</title>
+    <link href="#" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+                                      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+        /* Your CSS styles */
+        ::-webkit-scrollbar {
+                                  width: 8px;
+                                }
+                                /* Track */
+                                ::-webkit-scrollbar-track {
+                                  background: #f1f1f1; 
+                                }
+                                 
+                                /* Handle */
+                                ::-webkit-scrollbar-thumb {
+                                  background: #888; 
+                                }
+                                
+                                /* Handle on hover */
+                                ::-webkit-scrollbar-thumb:hover {
+                                  background: #555; 
+                                } 
+
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #000000;
+}
+.drag-image {
+  position: relative; /* Make the container position relative */
+  border: 1px dashed #fff;
+  height: 300px;
+  width: 350px;
+  border-radius: 5px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.buttons {
+  position: absolute; /* Position the buttons absolutely */
+  bottom: 130px; /* Adjust the distance from the bottom */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust horizontally to center */
+}
+
+.buttons button {
+  margin: 5px; /* Add margin between buttons */
+}
+
+.drag-image.active{
+  border: 2px solid #fff;
+}
+.drag-image .icon{
+  font-size: 30px;
+  color: #fff;
+}
+.drag-image h6{
+  font-size: 20px;
+  font-weight: 300;
+  color: #fff;
+}
+.drag-image span{
+  font-size: 14px;
+  font-weight: 300;
+  color: #fff;
+  margin: 10px 0 15px 0;
+}
+.buttons button{
+  padding: 10px 25px;
+  font-size: 16px; 
+  font-weight: 300;
+  border: none;
+  outline: none;
+  background:transparent;
+  color: #fff;
+  border:1px solid #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition:all 0.5s;
+}
+#removeImageButton {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 25px;
+  font-size: 16px; 
+  font-weight: 300;
+  border: none;
+  outline: none;
+  background:transparent;
+  color: #9c3737;
+  border:1px solid #9c3737;
+  border-radius: 5px;
+  cursor: pointer;
+  transition:all 0.5s;
+}
+
+#removeImageButton:hover {
+  background-color:#9c3737;
+    color:rgb(2, 2, 2);
+}
+
+
+.drag-image button{
+  padding: 10px 25px;
+  font-size: 16px; 
+  font-weight: 300;
+  border: none;
+  outline: none;
+  background:transparent;
+  color: #fff;
+  border:1px solid #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition:all 0.5s;
+}
+
+.drag-image button:hover{
+    background-color:#fff;
+    color:rgb(2, 2, 2);
+}
+
+.buttons button:hover{
+    background-color:#fff;
+    color:rgb(2, 2, 2);
+}
+
+.drag-image img{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+}
+    </style>
+</head>
+
+<body class="snippet-body">
+    <div class="drag-image">
+        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <h6>Drag & Drop File Here</h6>
+        <span>OR</span>
+        <button id="uploadButton">Browse File</button>
+        <input type="file" hidden id="fileInput">
+
+    </div>
+    <button id="removeImageButton" onclick="removeImage()" style="display: none;">Remove Image</button> <!-- Initially hidden -->
+    <div class="buttons">
+        <form id="generateForm" method="POST" action="{{ url_for('generate_video') }}">
+        <button type="submit" id="generateButton">‎ ‎ ‎  Generate Video  ‎ ‎ ‎ </button> <!-- New Generate Button -->
+        </form>
+    </div>
+
+    <script>
+         let uploadedFiles = [];
+
+const dropArea = document.querySelector(".drag-image"),
+    dragText = dropArea.querySelector("h6"),
+    uploadButton = dropArea.querySelector("#uploadButton"),
+    generateButton = document.getElementById("generateButton"),
+    input = dropArea.querySelector("#fileInput");
+
+let file;
+
+uploadButton.onclick = () => {
+    input.click();
+}
+
+input.addEventListener("change", function() {
+    file = this.files[0];
+    uploadedFiles.push(file);
+    dropArea.classList.add("active");
+    viewfile();
+});
+
+dropArea.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    dropArea.classList.add("active");
+    dragText.textContent = "Release to Upload File";
+});
+
+dropArea.addEventListener("dragleave", () => {
+    dropArea.classList.remove("active");
+    dragText.textContent = "Drag & Drop to Upload File";
+});
+
+dropArea.addEventListener("drop", (event) => {
+    event.preventDefault();
+    file = event.dataTransfer.files[0];
+    uploadedFiles.push(file);
+    viewfile();
+});
+
+function viewfile() {
+    let fileType = file.type;
+    let validExtensions = ["image/jpeg", "image/jpg", "image/png"];
+    if (validExtensions.includes(fileType)) {
+        let fileReader = new FileReader();
+        fileReader.onload = () => {
+            let fileURL = fileReader.result;
+            let img = document.createElement('img'); // Create new img element
+            img.src = fileURL; // Set src attribute to fileURL
+            img.alt = "image"; // Set alt attribute
+            img.style.position = "absolute"; // Set position to absolute
+            img.style.zIndex = "1"; // Set z-index to bring it to the front
+            dropArea.appendChild(img); // Append img element to dropArea
+            document.getElementById("removeImageButton").style.display = "block"; // Show the button when an image is displayed
+        }
+        fileReader.readAsDataURL(file);
+    } else {
+        alert("This is not an Image File!");
+        dropArea.classList.remove("active");
+        dragText.textContent = "Drag & Drop File Here";
+    }
+}
+
+
+
+function removeImage() {
+    dropArea.querySelector("img").remove(); // Remove the image element
+    document.getElementById("removeImageButton").style.display = "none"; // Hide the button when image is removed
+    
+    input.value = null;
+   
+    // Restore the "drag-image" appearance
+    dropArea.classList.remove("active");
+    dragText.textContent = "Drag & Drop File Here";
+}
+
+
+
+generateButton.onclick = (event) => {
+    event.preventDefault(); // Prevent default form submission
+    generateVideo();
+}
+
+function generateVideo() {
+    if (uploadedFiles.length > 0) {
+        let file = uploadedFiles[0];
+        let formData = new FormData();
+        formData.append('file', file);
+
+        fetch('/generate_video', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.hasOwnProperty('generation_id')) {
+                let generation_id = data.generation_id;
+                window.location.href = `/video/${generation_id}`;
+            } else {
+                console.log('Generation ID not found in response.');
+                window.location.href = `/error`;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    } else {
+        console.log("No file uploaded.");
+    }
+}
+
+
+     
+    </script>
+
+    <script type="text/javascript">
+        var myLink = document.querySelector('a[href="#"]');
+        // myLink.addEventListener('click', function(e) {
+        //     e.preventDefault();
+        // });
+    </script>
+</body>
+
+</html>

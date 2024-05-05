@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>alumini8</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background-color: #0b0a0a;
+        }
+
+        h1 {
+            color: #ede7e8;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        .center-button {
+            margin-top: 50px;
+        }
+
+        .center-button button {
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: 300;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+
+        .center-button button:hover {
+            background-color: #fff;
+            color: rgb(2, 2, 2);
+        }
+    </style>
+</head>
+<body>
+    <h1>Error</h1>
+    <p>An error occurred while generating the video. Please try again later.</p>
+    <div class="center-button">
+        <button onclick="tryAgain()">Try Again</button>
+    </div>
+
+    <script>
+        function tryAgain() {
+            window.location.href = "/upload";
+        }
+    </script>
+</body>
+</html>
